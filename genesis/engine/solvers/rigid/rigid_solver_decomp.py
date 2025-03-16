@@ -344,7 +344,9 @@ class RigidSolver(Solver):
         is_nonempty = np.concatenate([joint.dofs_motion_ang for joint in joints], dtype=gs.np_float).shape[0] > 0
         if is_nonempty:  # handle the case where there is a link with no dofs -- otherwise may cause invalid memory
             dofs_sol_params = np.concatenate([joint.dofs_sol_params for joint in joints], dtype=gs.np_float)
-            dofs_sol_params[dofs_sol_params[:, 0] == 0., 0] = self._sol_contact_resolve_time # use default contact resolve time if solref is not set
+            dofs_sol_params[dofs_sol_params[:, 0] == 0.0, 0] = (
+                self._sol_contact_resolve_time  # use default contact resolve time if solref is not set
+            )
             self._kernel_init_dof_fields(
                 dofs_motion_ang=np.concatenate([joint.dofs_motion_ang for joint in joints], dtype=gs.np_float),
                 dofs_motion_vel=np.concatenate([joint.dofs_motion_vel for joint in joints], dtype=gs.np_float),
